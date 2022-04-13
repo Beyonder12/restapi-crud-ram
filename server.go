@@ -150,10 +150,3 @@ func main() {
 	route.Start(":8081")
 
 }
-
-// CREATE TABLE "room_type_meta_data" (
-//     "id" SERIAL PRIMARY KEY,
-//     "room_type_id" INT NOT NULL,
-//     "internal_name" varchar NULL,
-//     CONSTRAINT "room_type_id_fkey" FOREIGN KEY ("room_type_id") REFERENCES "room_type"("id")
-// );
