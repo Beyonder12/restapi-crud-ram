@@ -9,6 +9,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// OOP we can say replaced by struct
 type Users struct {
 	ID      int
 	Email   string `json:"email"`
@@ -27,8 +28,8 @@ func main() {
 	db := db.Init()
 
 	route.POST("user/create_user", func(c echo.Context) error {
-		user := new(Users)
-		c.Bind(user)
+		user := new(Users) //skeleton
+		c.Bind(user)       //skeleton binds body
 
 		err := db.Create(user).Error
 		if err != nil {
@@ -41,7 +42,25 @@ func main() {
 			Data    Users
 		}{
 			Message: "New user has been created succesfully",
-			Data:    *user,
+			Data:    *user, //pointer concept
+		}
+
+		return c.JSON(http.StatusOK, response)
+	})
+
+	route.GET("user/get_data", func(c echo.Context) error {
+		// user := new(Users)
+		// c.Bind(user)
+
+		var result []Users
+		db.Find(&result)
+
+		response := struct {
+			Message string
+			Data    []Users
+		}{
+			Message: "Successfully seen user's data",
+			Data:    result,
 		}
 
 		return c.JSON(http.StatusOK, response)
@@ -104,24 +123,6 @@ func main() {
 			Message: "Successfully deleted data",
 			ID:      user.Email,
 		}
-		return c.JSON(http.StatusOK, response)
-	})
-
-	route.GET("user/get_data", func(c echo.Context) error {
-		// user := new(Users)
-		// c.Bind(user)
-
-		var result []Users
-		db.Find(&result)
-
-		response := struct {
-			Message string
-			Data    []Users
-		}{
-			Message: "Successfully seen user's data",
-			Data:    result,
-		}
-
 		return c.JSON(http.StatusOK, response)
 	})
 
